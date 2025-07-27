@@ -1,0 +1,540 @@
+{
+  "info": {
+    "name": "Employee Mistakes API",
+    "description": "Collection for testing the MERN stack admin dashboard API endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login (Admin or Supervisor)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Logs in as admin or supervisor and returns JWT token. Use the token in subsequent requests."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users (Supervisors) - Admin Only",
+      "item": [
+        {
+          "name": "Create Supervisor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Replace {{token}} with JWT from login."
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"newsupervisor\",\n  \"password\": \"sup123\",\n  \"role\": \"supervisor\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "users"]
+            },
+            "description": "Creates a new supervisor (admin only)."
+          }
+        },
+        {
+          "name": "Get All Supervisors",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "users"]
+            },
+            "description": "Retrieves all supervisors (admin only)."
+          }
+        },
+        {
+          "name": "Update Supervisor",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"updatedsupervisor\",\n  \"password\": \"newpass123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/users/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "replace_with_supervisor_id"
+                }
+              ]
+            },
+            "description": "Updates a supervisor by ID (admin only)."
+          }
+        },
+        {
+          "name": "Delete Supervisor",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/users/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "replace_with_supervisor_id"
+                }
+              ]
+            },
+            "description": "Deletes a supervisor by ID (admin only)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Employees - Shared (Admin/Supervisor)",
+      "item": [
+        {
+          "name": "Create Employee",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"employeeId\": \"EMP001\",\n  \"position\": \"Developer\",\n  \"shift\": \"Day\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/employees",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "employees"]
+            },
+            "description": "Creates a new employee."
+          }
+        },
+        {
+          "name": "Get All Employees",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/employees",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "employees"]
+            },
+            "description": "Retrieves all employees."
+          }
+        },
+        {
+          "name": "Search Employees",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/employees?search=John",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "employees"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "John"
+                }
+              ]
+            },
+            "description": "Searches employees by name or ID."
+          }
+        },
+        {
+          "name": "Update Employee",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Doe\",\n  \"position\": \"Senior Developer\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/employees/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "employees", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "replace_with_employee_id"
+                }
+              ]
+            },
+            "description": "Updates an employee by ID."
+          }
+        },
+        {
+          "name": "Delete Employee",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/employees/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "employees", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "replace_with_employee_id"
+                }
+              ]
+            },
+            "description": "Deletes an employee by ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mistakes - Shared (Admin/Supervisor)",
+      "item": [
+        {
+          "name": "Create Mistake",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employeeId\": \"replace_with_employee_id\",\n  \"type\": \"Coding Error\",\n  \"description\": \"Missed a semicolon\",\n  \"shift\": \"Day\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/mistakes",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "mistakes"]
+            },
+            "description": "Creates a new mistake."
+          }
+        },
+        {
+          "name": "Get All Mistakes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/mistakes",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "mistakes"]
+            },
+            "description": "Retrieves all mistakes."
+          }
+        },
+        {
+          "name": "Get Mistakes with Sort/Filter",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/mistakes?sort=date&filter=solved:false",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "mistakes"],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "date"
+                },
+                {
+                  "key": "filter",
+                  "value": "solved:false"
+                }
+              ]
+            },
+            "description": "Retrieves mistakes with optional sort and filter (e.g., state:type:shift)."
+          }
+        },
+        {
+          "name": "Update Mistake",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/mistakes/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "mistakes", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "replace_with_mistake_id"
+                }
+              ]
+            },
+            "description": "Updates a mistake by ID."
+          }
+        },
+        {
+          "name": "Delete Mistake",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/mistakes/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "mistakes", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "replace_with_mistake_id"
+                }
+              ]
+            },
+            "description": "Deletes a mistake by ID."
+          }
+        },
+        {
+          "name": "Mark Mistake as Solved/Unsolved",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"solved\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/mistakes/:id/solved",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "mistakes", ":id", "solved"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "replace_with_mistake_id"
+                }
+              ]
+            },
+            "description": "Marks a mistake as solved or unsolved."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics - Shared (Admin/Supervisor)",
+      "item": [
+        {
+          "name": "Get Analytics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/analytics",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "analytics"]
+            },
+            "description": "Retrieves analytics data (full for admin, partial for supervisor)."
+          }
+        },
+        {
+          "name": "Get Chart Data by Type",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/analytics/charts/byType",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "analytics", "charts", "byType"]
+            },
+            "description": "Retrieves chart data for mistakes by type."
+          }
+        },
+        {
+          "name": "Get Chart Data by Shift",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/analytics/charts/byShift",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "analytics", "charts", "byShift"]
+            },
+            "description": "Retrieves chart data for mistakes by shift."
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": "your_jwt_token_here",
+      "type": "string"
+    }
+  ]
+}
